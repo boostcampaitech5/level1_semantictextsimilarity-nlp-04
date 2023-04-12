@@ -14,8 +14,7 @@ from models.baseline import Model
 from dataloader import Dataloader
 from arguments import get_args
 
-def main():
-    args = get_args()
+
 
 if __name__ == '__main__':
     args = get_args()
@@ -28,7 +27,7 @@ if __name__ == '__main__':
     # gpu가 없으면 accelerator='cpu', 있으면 accelerator='gpu'
     trainer = pl.Trainer(accelerator='gpu',
                          max_epochs=args.max_epoch, 
-                         log_every_n_steps=1,
+                         log_every_n_steps=50,
                          )
 
     # Train part
