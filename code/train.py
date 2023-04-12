@@ -14,8 +14,7 @@ from models.baseline import Model
 from dataloader import Dataloader
 from arguments import get_args
 
-# def main():
-#     args = get_args()
+
 
 if __name__ == '__main__':
     args = get_args()
