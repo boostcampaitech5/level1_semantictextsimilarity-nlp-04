@@ -16,7 +16,7 @@ from functools import partial
 
 from pytorch_lightning.loggers import WandbLogger, TensorBoardLogger
 from pytorch_lightning.callbacks import ModelCheckpoint
-
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from models.baseline import Model
 from dataloader import Dataset, Dataloader
 from arguments import get_args
@@ -46,6 +46,9 @@ def main(args):
         # Logger 생성
         wandb_logger = WandbLogger(log_model="all")
 
+        #EarlyStopping
+        earlystopping = EarlyStopping(monitor='val_pearson', patience=2, mode='max')
+
         # Callback 생성
         checkpoint_callback = ModelCheckpoint(monitor='val_pearson', mode='max')
 
@@ -53,7 +56,7 @@ def main(args):
         trainer = pl.Trainer(
             accelerator='gpu',
             logger=wandb_logger,
-            callbacks=[checkpoint_callback],
+            callbacks=[checkpoint_callback, earlystopping],
             max_epochs=cfg.max_epoch,
             log_every_n_steps=1
         )
@@ -87,7 +90,7 @@ if __name__ == '__main__':
         'parameters': 
         {
             'batch_size': {'distribution':'categorical',
-                           'values': [16, 32, 64]},
+                           'values': [1, 2, 8, 16]},
             'lr': {'distribution':'log_uniform',
                    'max': 1e-5,
                    'min': 5e-6},
