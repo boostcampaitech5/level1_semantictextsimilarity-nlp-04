@@ -1,3 +1,2 @@
-차권모!
-
-push 되는지 확인
+- 학습 명령어 : python3 code/train.py
+- 예측 명령어 : python3 code/inference.py -> output.csv 생성
