@@ -90,7 +90,7 @@ if __name__ == '__main__':
         'parameters': 
         {
             'batch_size': {'distribution':'categorical',
-                           'values': [1, 2, 8, 16]},
+                           'values': [8, 16, 32]},
             'lr': {'distribution':'log_uniform',
                    'max': 1e-5,
                    'min': 5e-6},
