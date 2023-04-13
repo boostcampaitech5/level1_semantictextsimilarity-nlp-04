@@ -30,7 +30,13 @@ if __name__ == '__main__':
     predictions = trainer.predict(model=model, datamodule=dataloader)
 
     # 예측된 결과를 형식에 맞게 반올림하여 준비합니다.
-    predictions = list(round(float(i), 1) for i in torch.cat(predictions))
+    predictions = list( round(float(i), 1) for i in torch.cat(predictions))
+    for i in range(len(predictions)):
+        if predictions[i] < 0:
+            predictions[i] = 0
+        elif predictions[i] > 5:
+            predictions[i] = 5
+            
 
     # output 형식을 불러와서 예측된 결과로 바꿔주고, output.csv로 출력합니다.
     output = pd.read_csv('./data/sample_submission.csv')
