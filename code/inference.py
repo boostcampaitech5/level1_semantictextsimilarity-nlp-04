@@ -15,8 +15,20 @@ from arguments import get_args
 
 
 if __name__ == '__main__':
-    args = get_args()
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--model_name', default='snunlp/KR-ELECTRA-discriminator', type=str)
+    parser.add_argument('--batch_size', default=16, type=int)
+    parser.add_argument('--max_epoch', default=1, type=int)
+    parser.add_argument('--shuffle', default=True)
+    parser.add_argument('--learning_rate', default=1e-5, type=float)
+    parser.add_argument('--train_path', default='./data/train.csv')
+    parser.add_argument('--dev_path', default='./data/dev.csv')
+    parser.add_argument('--test_path', default='./data/dev.csv')
+    parser.add_argument('--predict_path', default='./data/test.csv')
+    parser.add_argument('--augmentation', default=True)
+    args = parser.parse_args(args=[])
+    # args = get_args()
+    # print(get_args())
     # dataloader와 model을 생성합니다.
     dataloader = Dataloader(args.model_name, args.batch_size, args.shuffle, args.train_path, args.dev_path,
                             args.test_path, args.predict_path)
