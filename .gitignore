@@ -3,3 +3,6 @@ data
 model.pt
 *.csv
 lightning_logs
+wandb
+*/__pycache__
+*/*/__pycache__
