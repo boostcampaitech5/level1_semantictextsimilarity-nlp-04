@@ -90,12 +90,13 @@ if __name__ == '__main__':
         'parameters': 
         {
             'batch_size': {'distribution':'categorical',
-                           'values': [1, 2, 8, 16]},
-            'lr': {'distribution':'log_uniform',
-                   'max': 1e-5,
-                   'min': 5e-6},
+                           'values': [2]},
+            'lr': {'value' : 1e-5},
+            # 'lr': {'distribution':'log_uniform',
+            #        'max': 1e-5,
+            #        'min': 5e-6},
             'max_epoch':{'distribution':'constant',
-                         'value':3}
+                         'value':15}
         }
     }
 
