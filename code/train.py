@@ -27,7 +27,7 @@ if __name__ == '__main__':
     # gpu가 없으면 accelerator='cpu', 있으면 accelerator='gpu'
     trainer = pl.Trainer(accelerator='gpu',
                          max_epochs=args.max_epoch, 
-                         log_every_n_steps=50,
+                         log_every_n_steps=100,
                          )
 
     # Train part
