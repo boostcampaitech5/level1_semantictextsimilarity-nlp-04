@@ -2,6 +2,7 @@ import pytorch_lightning as pl
 import transformers
 import torch
 import torchmetrics
+from torch.optim.lr_scheduler import StepLR
 
 class Model(pl.LightningModule):
     def __init__(self, model_name, lr):
@@ -55,4 +56,5 @@ class Model(pl.LightningModule):
 
     def configure_optimizers(self):
         optimizer = torch.optim.AdamW(self.parameters(), lr=self.lr)
-        return optimizer
+        scheduler = StepLR(optimizer, step_size=1)
+        return [optimizer], [scheduler]
