@@ -3,6 +3,17 @@ import transformers
 import torch
 import torchmetrics
 
+#피어슨 상관계수 함수
+def plcc_loss(output, target):  
+    x = output
+    y = target
+
+    vx = x - torch.mean(x)
+    vy = y - torch.mean(y)
+
+    cost = torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2)))
+    return 1 - cost**2
+
 class Model(pl.LightningModule):
     def __init__(self, model_name, lr):
         super().__init__()
