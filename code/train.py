@@ -29,7 +29,9 @@ if __name__ == '__main__':
                          max_epochs=args.max_epoch, 
                          log_every_n_steps=50,
                          )
-
+    
+    #logger = CSVLogger("logs", name="dir_name")
+    
     # Train part
     trainer.fit(model=model, datamodule=dataloader)
     trainer.test(model=model, datamodule=dataloader)
