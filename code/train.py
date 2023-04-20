@@ -30,6 +30,14 @@ if __name__ == '__main__':
                          log_every_n_steps=50,
                          )
     
+    #checkpoint_callback = ModelCheckpoint(
+    save_top_k=4,
+    monitor="val_pearson",
+    mode="max",
+    dirpath="./checkpoint/0420/",
+    filename="sample-{epoch:02d}-{val_loss:.2f}",
+)
+    
     #logger = CSVLogger("logs", name="dir_name")
     
     # Train part
