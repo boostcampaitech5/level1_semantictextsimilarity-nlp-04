@@ -106,6 +106,19 @@ class Dataloader(pl.LightningDataModule):
             train_data2.rename(columns={'sentence_1':'sentence_2', 'sentence_2':'sentence_1'}, inplace = True)
             train_data = pd.concat([train_data, train_data2])
             
+            data_ = train_data[train_data['label'] != 0]
+            smoothing_data = train_data[train_data['label'] == 0]
+            smoothing_data2 = smoothing_data.sample(frac = 0.5)
+            smoothing_data3 = pd.concat([smoothing_data2, smoothing_data])
+            smoothing_data3 = smoothing_data3.drop_duplicates(keep = False)
+            smoothing_data3 = smoothing_data3.sample(frac = 0.5)
+            label5_sentence_data = smoothing_data3['sentence_1']
+            smoothing_data3['sentence_2'] = label5_sentence_data
+            smoothing_data3['label'] = [5 for i in range(len(smoothing_data3))]
+            smoothing_data3['binary-label'] = [1 for i in range(len(smoothing_data3))]
+            train_data = pd.concat([smoothing_data2, smoothing_data3, data_])
+            train_data = train_data.sample(frac = 1)
+            
             # 학습데이터 준비
             train_inputs, train_targets = self.preprocessing(train_data, stage)
             print('train_inputs:', len(train_inputs))
