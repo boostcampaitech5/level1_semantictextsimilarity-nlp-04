@@ -4,6 +4,17 @@ import torch
 import torchmetrics
 from torch.optim.lr_scheduler import StepLR
 
+#피어슨 상관계수 함수
+def plcc_loss(output, target):  
+    x = output
+    y = target
+
+    vx = x - torch.mean(x)
+    vy = y - torch.mean(y)
+
+    cost = torch.sum(vx * vy) / (torch.sqrt(torch.sum(vx ** 2)) * torch.sqrt(torch.sum(vy ** 2)))
+    return 1 - cost**2
+
 class Model(pl.LightningModule):
     def __init__(self, model_name, lr):
         super().__init__()
@@ -16,8 +27,12 @@ class Model(pl.LightningModule):
         self.plm = transformers.AutoModelForSequenceClassification.from_pretrained(
             pretrained_model_name_or_path=model_name, num_labels=1)
         # Loss 계산을 위해 사용될 L1Loss를 호출합니다.
+        
         self.loss_func = torch.nn.L1Loss()
-
+        
+        #Huber Loss
+        #self.loss_func = torch.nn.SmoothL1Loss()
+        
         # wandb 에 하이퍼파라미터 저장
         self.save_hyperparameters()
 
