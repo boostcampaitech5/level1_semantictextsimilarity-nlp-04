@@ -29,7 +29,17 @@ if __name__ == '__main__':
                          max_epochs=args.max_epoch, 
                          log_every_n_steps=100,
                          )
-
+    
+    #checkpoint_callback = ModelCheckpoint(
+    save_top_k=4,
+    monitor="val_pearson",
+    mode="max",
+    dirpath="./checkpoint/0420/",
+    filename="sample-{epoch:02d}-{val_loss:.2f}",
+)
+    
+    #logger = CSVLogger("logs", name="dir_name")
+    
     # Train part
     trainer.fit(model=model, datamodule=dataloader)
     trainer.test(model=model, datamodule=dataloader)

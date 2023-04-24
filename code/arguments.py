@@ -3,7 +3,14 @@ import argparse
 def get_args():
     # 기본 설정값만 남기고, hyperparameter는 wandb에게 맡김.
     parser = argparse.ArgumentParser()
+<<<<<<< HEAD
     parser.add_argument('--model_name', default='klue/roberta-base', type=str)
+=======
+    #parser.add_argument('--model_name', default='monologg/koelectra-base-v3-discriminator', type=str)
+    #parser.add_argument('--model_name', default='snunlp/KR-ELECTRA-discriminator', type=str)
+    
+    parser.add_argument('--model_name', default='klue/roberta-large', type=str)
+>>>>>>> origin/HEAD
     parser.add_argument('--batch_size', default=8, type=int)
     parser.add_argument('--max_epoch', default=30, type=int)
     parser.add_argument('--shuffle', default=True)
