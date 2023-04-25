@@ -34,6 +34,8 @@ class Dataloader(pl.LightningDataModule):
                  predict_path
     ):
         super().__init__()
+        self.save_hyperparameters()
+        
         self.model_name = model_name
         self.batch_size = batch_size
         self.shuffle = shuffle
@@ -120,13 +122,13 @@ class Dataloader(pl.LightningDataModule):
             train_data = train_data.sample(frac = 1)
             
             # 학습데이터 준비
-            train_inputs, train_targets = self.preprocessing(train_data, stage)
+            train_inputs, train_targets = self.preprocessing(train_data)
             print('train_inputs:', len(train_inputs))
             print('train_targets:', len(train_targets))
 
 
             # 검증데이터 준비
-            val_inputs, val_targets = self.preprocessing(val_data, stage)
+            val_inputs, val_targets = self.preprocessing(val_data)
             
             # train 데이터만 shuffle을 적용해줍니다, 필요하다면 val, test 데이터에도 shuffle을 적용할 수 있습니다
             self.train_dataset = Dataset(train_inputs, train_targets)
@@ -134,7 +136,7 @@ class Dataloader(pl.LightningDataModule):
         else:
             # 평가데이터 준비
             #test_data = pd.read_csv(self.test_path)
-            test_inputs, test_targets = self.preprocessing(self.test_data, stage)
+            test_inputs, test_targets = self.preprocessing(self.test_data)
             
             self.test_dataset = Dataset(test_inputs, test_targets)
             
@@ -148,7 +150,7 @@ class Dataloader(pl.LightningDataModule):
             for text_col in self.text_columns:
                 predict_data[text_col] = predict_data[text_col].str.lower()
                 
-            predict_inputs, predict_targets = self.preprocessing(predict_data, stage)
+            predict_inputs, predict_targets = self.preprocessing(predict_data)
             self.predict_dataset = Dataset(predict_inputs, [])
 
     def train_dataloader(self):

@@ -15,7 +15,7 @@ from datetime import datetime
 from functools import partial
 
 from pytorch_lightning.loggers import WandbLogger, TensorBoardLogger
-from pytorch_lightning.callbacks import ModelCheckpoint
+from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from models.baseline import Model
 from dataloader import Dataset, Dataloader
@@ -30,9 +30,9 @@ def main(args):
             type='model',
             metadata=dict(cfg)
         )
+
         # dataloader와 model을 생성합니다.
         dataloader = Dataloader(args.model_name,
-                                # args.batch_size, 
                                 cfg.batch_size,
                                 args.shuffle,
                                 args.train_path,
@@ -40,25 +40,37 @@ def main(args):
                                 args.test_path,
                                 args.predict_path,
                                 )
-        # model = Model(args.model_name, args.learning_rate)
-        model = Model(args.model_name, cfg.lr)
+
+        model = Model(
+            args.model_name,
+            cfg.lr,
+            args.weight_decay,
+            args.loss
+        )
 
         # Logger 생성
         wandb_logger = WandbLogger(log_model="all")
 
         #EarlyStopping
-        earlystopping = EarlyStopping(monitor='val_pearson', patience=2, mode='max')
+        earlystopping = EarlyStopping(monitor='val_pearson', patience=args.patience, mode='max')
 
         # Callback 생성
-        checkpoint_callback = ModelCheckpoint(monitor='val_pearson', mode='max')
+        checkpoint_callback = ModelCheckpoint(
+            save_top_k=4,
+            monitor="val_pearson",
+            mode="max",
+        )
+
+        # learning rate monitor
+        lr_monitor = LearningRateMonitor(logging_interval='step')
 
         # gpu가 없으면 accelerator='cpu', 있으면 accelerator='gpu'
         trainer = pl.Trainer(
             accelerator='gpu',
             logger=wandb_logger,
-            callbacks=[checkpoint_callback, earlystopping],
+            callbacks=[checkpoint_callback, earlystopping, lr_monitor],
             max_epochs=cfg.max_epoch,
-            log_every_n_steps=1
+            log_every_n_steps=100
         )
 
         # Train part
@@ -90,13 +102,10 @@ if __name__ == '__main__':
         'parameters': 
         {
             'batch_size': {'distribution':'categorical',
-                           'values': [2]},
-            'lr': {'value' : 1e-5},
-            # 'lr': {'distribution':'log_uniform',
-            #        'max': 1e-5,
-            #        'min': 5e-6},
+                           'values': [8,16]},
+            'lr': {'value' : args.learning_rate},
             'max_epoch':{'distribution':'constant',
-                         'value':15}
+                         'value':args.max_epoch}
         }
     }
 
@@ -105,9 +114,4 @@ if __name__ == '__main__':
 
     wandb.agent(sweep_id,
                 function=main_with_args,
-                count=2)
-    
-
-    # run = wandb.init()
-    # artifact = run.use_artifact('tjddn0402/uncategorized/model-4faizurs:best', type='model')
-    # artifact_dir = artifact.download()
+                count=args.run_count)
