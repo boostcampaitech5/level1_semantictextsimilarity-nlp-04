@@ -182,9 +182,7 @@ Regression에서 사용할 수 있는 대표적인 Loss function 3가지를 적�
 
 이번 프로젝트의 평가 지표인 pearson correlation을 loss function으로 직접 활용하기 위해 PLCC loss를 도입하였다.
 
-$$
-PLCC\space Loss(y,\hat{y}) = 1-corr(y,\hat{y})
-$$
+$$PLCC\space Loss(y,\hat{y}) = 1-corr(y,\hat{y})$$
 
 ```python
 class PLCCLoss(nn.Module):
@@ -218,9 +216,9 @@ wandb에서 다른 하이퍼파라미터 조합에 대한 실험을 더 효율�
 
 - **Weight Decay (L2 regularization)**
     
-    $$
-    Loss_{new}(w) = Loss_{old}(w) + \lambda w^T w 
-    $$
+    
+ $$Loss_{new}(w) = Loss_{old}(w) + \lambda w^T w $$
+    
     
 
 <img src="https://user-images.githubusercontent.com/77380514/234154684-20392861-1b82-491a-88d9-280e78381a13.png" width="50%" height="300">
