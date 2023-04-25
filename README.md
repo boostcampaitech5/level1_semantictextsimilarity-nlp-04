@@ -113,7 +113,8 @@ Train dataset의 label 분포를 확인했을 때, 다른 값에 비해 0.0에 �
 - train데이터의 50% 이상이 label 0이었기 때문에 해당 Label을 under sampling 하였습니다.
 - label 5인 데이터는 label 0인 데이터보다 4배 적었기 때문에 sentence 1을 sentence 2로 복사하여 label 5 데이터 증강
 
-![스크린샷 2023-04-20 오후 5.42.00.png](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/%25E1%2584%2589%25E1%2585%25B3%25E1%2584%258F%25E1%2585%25B3%25E1%2584%2585%25E1%2585%25B5%25E1%2586%25AB%25E1%2584%2589%25E1%2585%25A3%25E1%2586%25BA_2023-04-20_%25E1%2584%258B%25E1%2585%25A9%25E1%2584%2592%25E1%2585%25AE_5.42.00.png)
+<img width="792" alt="smoothing" src="https://user-images.githubusercontent.com/77380514/234153399-9fa9484b-4880-47a3-bea1-fccd0dc6131b.png">
+
 
 - 다음과 같이 label 0은 50% 언더 샘플링, 없앤 label 0의 데이터 중 50%를 이용해 label 5 오버 샘플링하였다.
 - 데이터 label 불균형을 어느정도 해소하고 나니 모델의 성능이 향상되어 유의미한 기법이라고 판단했다.
@@ -121,6 +122,8 @@ Train dataset의 label 분포를 확인했을 때, 다른 값에 비해 0.0에 �
 ## 3. Model Selection
 
 RoBERTa와 ELECTRA 모델을 사용하여 실험했다. RoBERTa는 더 큰 데이터와 큰 배치사이즈를 사용해 성능을 크게 개선한 모델로 Dynamic Masking을 도입했다. ELECTRA는 기존 BERT의 학습 효율성의 단점을 보완하기 위해 Replaced Token Detection을 도입한 모델이다. BERT와는 달리 Discriminator 구조를 사용함으로 전체 token 중 15%만 학습하던  것과 달리 모든 token에 대해 학습하는 효과를 얻을 수 있어 높은 성능을 보이는 모델이다. 모든 token에 대해 사전학습하는 기법으로 더 높은 성능과 RoBERTa 기반 모델의 실험과 앙상블 효과를 기대하기 위해 ELECTRA를 선택했다.
+
+<img src="https://user-images.githubusercontent.com/77380514/234153722-e0f309b9-9da6-4100-acec-991fbb5d874a.jpg" width="50%" height="300"></img>
 
 각 모델별로 
 
@@ -134,7 +137,8 @@ RoBERTa와 ELECTRA 모델을 사용하여 실험했다. RoBERTa는 더 큰 데�
 
 실험을 진행하면서 learning rate는 1e-5 값으로 통일하여 실행했지만, learning rate scheduler로 `StepLR`을 사용하였다. `StepLR` 외에도 `CosineAnnealingLR` , `CyclicLR` 등을 적용해보고자 했다. 하지만 이런 learning rate scheduler들은 유효하게 이용하려면 epoch를 길게 하여 실험해야 했다. 다양한 실험을 위해 epoch를 짧게 하여 실험을 진행해 왔기 때문에 이번 실험에서 `CosineAnnealingLR` , `CyclicLR` 에 대해 충분한 검증을 할 수는 없으므로 `StepLR`을 주로 사용했다. 
 
-![StepLR(step_size=2, gamma=0.7) 에 의한 learning rate decay](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/WB_Chart_4_21_2023_11_36_06_AM.png)
+<img src="https://user-images.githubusercontent.com/77380514/234153886-13463862-ed50-46d6-bcdf-c314cec92119.png" width="50%" height="300"></img>
+
 
 StepLR(step_size=2, gamma=0.7) 에 의한 learning rate decay
 
@@ -149,7 +153,7 @@ Regression에서 사용할 수 있는 대표적인 Loss function 3가지를 적�
 
 ### 5.1. L1-Loss (MAE)
 
-![Untitled](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/Untitled%202.png)
+<img src="https://user-images.githubusercontent.com/77380514/234154357-5c42ef71-4e40-4120-85a0-e26f5f7e9af7.png" width="50%" height="300"></img>
 
 - 기본 Baseline에 설정되어 있던 Loss이다.
 - $\space (Y_i-\hat{Y}_i) = 0$ 일 때 미분이 불가능하다는 단점이 있다.
@@ -159,7 +163,7 @@ Regression에서 사용할 수 있는 대표적인 Loss function 3가지를 적�
 
 ### 5.2. L2-Loss (MSE)
 
-![Untitled](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/Untitled%203.png)
+<img src="https://user-images.githubusercontent.com/77380514/234154422-0e085da7-c208-4ac8-b6cf-4c4502642076.png" width="50%" height="300"></img>
 
 - $error \space (Y_i-\hat{Y}_i)$ 가 클수록 quadratic하게 Loss 가 커지는 단점이 있다.
 - STS 학습 예시를 찾아보았을때, 보통 MSE loss를 많이 사용하였다.
@@ -167,7 +171,7 @@ Regression에서 사용할 수 있는 대표적인 Loss function 3가지를 적�
 
 ### 5.3. Huber Loss
 
-![Untitled](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/Untitled%204.png)
+<img src="https://user-images.githubusercontent.com/77380514/234154459-d5f5624b-055f-4243-a53d-083402a3367c.png" width="50%" height="300"></img>
 
 - 모든 지점에서 미분 가능하며 이상치에 강건하다.
 - L1 Loss와 L2 Loss의 단점을 서로 보완한 Loss function
@@ -197,9 +201,8 @@ class PLCCLoss(nn.Module):
 
 PLCC의 경우, 학습 초기부터 사용하는 경우 pearson correlation이 -1로 수렴할 가능성이 있기 때문에, 어느정도 학습이 안정화 된 이후부터 사용했다.
 
-![W&B Chart 4_21_2023, 9_41_27 AM.png](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/WB_Chart_4_21_2023_9_41_27_AM.png)
+<img src="https://user-images.githubusercontent.com/77380514/234154603-ceeb628b-286b-40ed-9a3f-b75bd87b51cd.png" width="50%" height="300"></img><img src="https://user-images.githubusercontent.com/77380514/234154613-9b07713f-d48c-4d40-bd2b-93736bab14d8.png" width="50%" height="300"></img>
 
-![W&B Chart 4_21_2023, 9_49_46 AM.png](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/WB_Chart_4_21_2023_9_49_46_AM.png)
 
 - 파란색 실선 : Huber loss를 이용하여 먼저 fine tuning
     - →초록색 실선 : PLCC Loss를 이용하여 이어서 fine tuning
@@ -220,7 +223,7 @@ wandb에서 다른 하이퍼파라미터 조합에 대한 실험을 더 효율�
     $$
     
 
-![pearson correlation에 크게 영향을 주지 않으면서 사용할 수 있는 weight decay 값은 1e-3임을 실험적으로 확인 후 적용하였다.](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/WB_Chart_4_21_2023_9_36_35_AM.png)
+<img src="https://user-images.githubusercontent.com/77380514/234154684-20392861-1b82-491a-88d9-280e78381a13.png" width="50%" height="300">
 
 pearson correlation에 크게 영향을 주지 않으면서 사용할 수 있는 weight decay 값은 1e-3임을 실험적으로 확인 후 적용하였다.
 
@@ -254,7 +257,7 @@ Weight decay는 일반적으로 overfitting을 방지하기 위해 사용된다.
 
 # 프로젝트 수행 결과
 
-![Public 0.9216 → Private 0.9337 (1등 : 0.9420)](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/Untitled%205.png)
+<img src="https://user-images.githubusercontent.com/77380514/234154812-7b3a01b3-7ef6-4c23-bd5a-04e09d426de6.png" width="50%" height="300">
 
 Public 0.9216 → Private 0.9337 (1등 : 0.9420)
 
