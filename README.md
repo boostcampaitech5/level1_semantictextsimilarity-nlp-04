@@ -113,7 +113,7 @@ Train dataset의 label 분포를 확인했을 때, 다른 값에 비해 0.0에 �
 - train데이터의 50% 이상이 label 0이었기 때문에 해당 Label을 under sampling 하였습니다.
 - label 5인 데이터는 label 0인 데이터보다 4배 적었기 때문에 sentence 1을 sentence 2로 복사하여 label 5 데이터 증강
 
-<img src="https://user-images.githubusercontent.com/77380514/234153399-9fa9484b-4880-47a3-bea1-fccd0dc6131b.png">
+<img src="https://user-images.githubusercontent.com/77380514/234153399-9fa9484b-4880-47a3-bea1-fccd0dc6131b.png" width="50%" height="300">
 
 
 - 다음과 같이 label 0은 50% 언더 샘플링, 없앤 label 0의 데이터 중 50%를 이용해 label 5 오버 샘플링하였다.
