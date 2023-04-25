@@ -71,9 +71,11 @@ Back translation, 모델 리서치, loss function 구축, Ensemble
 
 ## 1. EDA (Exploratory Data Analysis)
 
-![Untitled](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/Untitled.png)
+<img src="https://user-images.githubusercontent.com/77380514/234152488-139affd4-e08d-4360-bb59-dc61dadb66d7.png" width="50%" height="300"></img>
 
-![Untitled](STS_NLP_%E1%84%90%E1%85%B5%E1%86%B7%20%E1%84%85%E1%85%B5%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3(04)%204046bfdb5ce24724afbb40fd838c68eb/Untitled%201.png)
+<img src="https://user-images.githubusercontent.com/77380514/234152669-bf78f48d-31f5-4ad5-a4a5-efb334d335ef.png" width="50%" height="300"></img>
+
+
 
 Train dataset의 label 분포를 확인했을 때, 다른 값에 비해 0.0에 많은 데이터가 몰려 있어, label 불균형이 존재함을 알 수 있다.
 
@@ -81,6 +83,7 @@ Train dataset의 label 분포를 확인했을 때, 다른 값에 비해 0.0에 �
 - 반면 dev.csv 의 경우 label의 분포가 고르게 나타남을 알 수 있었다.
 
 ## 2. Data Augmentation
+
 
 ### 2.1. EDA (Easy Data Augmentation)
 
