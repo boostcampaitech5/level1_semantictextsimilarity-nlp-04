@@ -71,9 +71,7 @@ Back translation, 모델 리서치, loss function 구축, Ensemble
 
 ## 1. EDA (Exploratory Data Analysis)
 
-<img src="https://user-images.githubusercontent.com/77380514/234152488-139affd4-e08d-4360-bb59-dc61dadb66d7.png" width="50%" height="300"></img>
-
-<img src="https://user-images.githubusercontent.com/77380514/234152669-bf78f48d-31f5-4ad5-a4a5-efb334d335ef.png" width="50%" height="300"></img>
+<img src="https://user-images.githubusercontent.com/77380514/234152488-139affd4-e08d-4360-bb59-dc61dadb66d7.png" width="50%" height="300"></img><img src="https://user-images.githubusercontent.com/77380514/234152669-bf78f48d-31f5-4ad5-a4a5-efb334d335ef.png" width="50%" height="300"></img>
 
 
 
