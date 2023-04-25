@@ -15,6 +15,7 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_name', default='snunlp/KR-ELECTRA-discriminator', type=str)
+    args = parser.parse_args(args=[])
 
     plm = transformers.AutoModelForSequenceClassification.from_pretrained(
                 pretrained_model_name_or_path=args.model_name, num_labels=1)
