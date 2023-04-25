@@ -123,7 +123,7 @@ Train dataset의 label 분포를 확인했을 때, 다른 값에 비해 0.0에 �
 
 RoBERTa와 ELECTRA 모델을 사용하여 실험했다. RoBERTa는 더 큰 데이터와 큰 배치사이즈를 사용해 성능을 크게 개선한 모델로 Dynamic Masking을 도입했다. ELECTRA는 기존 BERT의 학습 효율성의 단점을 보완하기 위해 Replaced Token Detection을 도입한 모델이다. BERT와는 달리 Discriminator 구조를 사용함으로 전체 token 중 15%만 학습하던  것과 달리 모든 token에 대해 학습하는 효과를 얻을 수 있어 높은 성능을 보이는 모델이다. 모든 token에 대해 사전학습하는 기법으로 더 높은 성능과 RoBERTa 기반 모델의 실험과 앙상블 효과를 기대하기 위해 ELECTRA를 선택했다.
 
-<img src="https://user-images.githubusercontent.com/77380514/234153722-e0f309b9-9da6-4100-acec-991fbb5d874a.jpg" width="50%" height="300"></img>
+<img src="https://user-images.githubusercontent.com/77380514/234153722-e0f309b9-9da6-4100-acec-991fbb5d874a.jpg"></img>
 
 각 모델별로 
 
@@ -153,7 +153,7 @@ Regression에서 사용할 수 있는 대표적인 Loss function 3가지를 적�
 
 ### 5.1. L1-Loss (MAE)
 
-<img src="https://user-images.githubusercontent.com/77380514/234154357-5c42ef71-4e40-4120-85a0-e26f5f7e9af7.png" width="50%" height="300"></img>
+<img src="https://user-images.githubusercontent.com/77380514/234154357-5c42ef71-4e40-4120-85a0-e26f5f7e9af7.png" ></img>
 
 - 기본 Baseline에 설정되어 있던 Loss이다.
 - $\space (Y_i-\hat{Y}_i) = 0$ 일 때 미분이 불가능하다는 단점이 있다.
@@ -163,7 +163,7 @@ Regression에서 사용할 수 있는 대표적인 Loss function 3가지를 적�
 
 ### 5.2. L2-Loss (MSE)
 
-<img src="https://user-images.githubusercontent.com/77380514/234154422-0e085da7-c208-4ac8-b6cf-4c4502642076.png" width="50%" height="300"></img>
+<img src="https://user-images.githubusercontent.com/77380514/234154422-0e085da7-c208-4ac8-b6cf-4c4502642076.png" ></img>
 
 - $error \space (Y_i-\hat{Y}_i)$ 가 클수록 quadratic하게 Loss 가 커지는 단점이 있다.
 - STS 학습 예시를 찾아보았을때, 보통 MSE loss를 많이 사용하였다.
@@ -171,7 +171,7 @@ Regression에서 사용할 수 있는 대표적인 Loss function 3가지를 적�
 
 ### 5.3. Huber Loss
 
-<img src="https://user-images.githubusercontent.com/77380514/234154459-d5f5624b-055f-4243-a53d-083402a3367c.png" width="50%" height="300"></img>
+<img src="https://user-images.githubusercontent.com/77380514/234154459-d5f5624b-055f-4243-a53d-083402a3367c.png"></img>
 
 - 모든 지점에서 미분 가능하며 이상치에 강건하다.
 - L1 Loss와 L2 Loss의 단점을 서로 보완한 Loss function
@@ -257,7 +257,7 @@ Weight decay는 일반적으로 overfitting을 방지하기 위해 사용된다.
 
 # 프로젝트 수행 결과
 
-<img src="https://user-images.githubusercontent.com/77380514/234154812-7b3a01b3-7ef6-4c23-bd5a-04e09d426de6.png" width="50%" height="300">
+<img src="https://user-images.githubusercontent.com/77380514/234154812-7b3a01b3-7ef6-4c23-bd5a-04e09d426de6.png" width="100%" height="300">
 
 Public 0.9216 → Private 0.9337 (1등 : 0.9420)
 
