@@ -79,29 +79,29 @@ class Dataloader(pl.LightningDataModule):
         return inputs, targets
 
     def setup(self, stage='fit'):
+        # 학습 데이터와 검증 데이터셋을 호출합니다
+        train_data = pd.read_csv(self.train_path)
+        val_data = pd.read_csv(self.dev_path)
+        train_data = pd.concat([train_data, val_data])
+        
+        num = len(train_data)
+        #분리 작업(전처리 후에는 문장 위치가 사라지니 미리 나눔)
+        train_data, val_data, test_data = train_data.iloc[0:int(num*0.7), :], train_data.iloc[int(num*0.7):int(num*0.85), :], train_data.iloc[int(num*0.85):, :]
+        
+        #특수문자 제거
+        for text_col in self.text_columns:
+            train_data[text_col] = train_data[text_col].str.replace(pat=r'[^\w]',repl=r' ',regex=True)
+            val_data[text_col] = val_data[text_col].str.replace(pat=r'[^\w]',repl=r' ',regex=True)
+            test_data[text_col] = test_data[text_col].str.replace(pat=r'[^\w]',repl=r' ',regex=True)
+
+        # 영어 모두 소문자로
+        for text_col in self.text_columns:
+            train_data[text_col] = train_data[text_col].str.lower()
+            val_data[text_col] = val_data[text_col].str.lower()
+            test_data[text_col] = test_data[text_col].str.lower()
+
+        self.test_data = test_data
         if stage == 'fit':
-            # 학습 데이터와 검증 데이터셋을 호출합니다
-            train_data = pd.read_csv(self.train_path)
-            val_data = pd.read_csv(self.dev_path)
-            train_data = pd.concat([train_data, val_data])
-            
-            num = len(train_data)
-            #분리 작업(전처리 후에는 문장 위치가 사라지니 미리 나눔)
-            train_data, val_data, test_data = train_data.iloc[0:int(num*0.7), :], train_data.iloc[int(num*0.7):int(num*0.85), :], train_data.iloc[int(num*0.85):, :]
-            
-            #특수문자 제거
-            for text_col in self.text_columns:
-                train_data[text_col] = train_data[text_col].str.replace(pat=r'[^\w]',repl=r' ',regex=True)
-                val_data[text_col] = val_data[text_col].str.replace(pat=r'[^\w]',repl=r' ',regex=True)
-                test_data[text_col] = test_data[text_col].str.replace(pat=r'[^\w]',repl=r' ',regex=True)
-
-            # 영어 모두 소문자로
-            for text_col in self.text_columns:
-                train_data[text_col] = train_data[text_col].str.lower()
-                val_data[text_col] = val_data[text_col].str.lower()
-                test_data[text_col] = test_data[text_col].str.lower()
-
-            self.test_data = test_data
             
             #데이터 증강
             train_data2 = train_data.copy()
