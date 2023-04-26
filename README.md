@@ -123,7 +123,13 @@ Train dataset의 label 분포를 확인했을 때, 다른 값에 비해 0.0에 �
 
 RoBERTa와 ELECTRA 모델을 사용하여 실험했다. RoBERTa는 더 큰 데이터와 큰 배치사이즈를 사용해 성능을 크게 개선한 모델로 Dynamic Masking을 도입했다. ELECTRA는 기존 BERT의 학습 효율성의 단점을 보완하기 위해 Replaced Token Detection을 도입한 모델이다. BERT와는 달리 Discriminator 구조를 사용함으로 전체 token 중 15%만 학습하던  것과 달리 모든 token에 대해 학습하는 효과를 얻을 수 있어 높은 성능을 보이는 모델이다. 모든 token에 대해 사전학습하는 기법으로 더 높은 성능과 RoBERTa 기반 모델의 실험과 앙상블 효과를 기대하기 위해 ELECTRA를 선택했다.
 
-<img src="https://user-images.githubusercontent.com/77380514/234153722-e0f309b9-9da6-4100-acec-991fbb5d874a.jpg"></img>
+|모델 이름|learning rate|epoch|batch size|augmentation|test pearson|preprocessing|scheduler|Loss|
+|-|-|-|-|-|-|-|-|-|
+|**snunlp/KR-ELECTRA-discriminator**|0.00001|15|16|sentence switch + undersampling + oversampling|0.9202|X|stepLR|L1Loss|
+|**monologg/koelectra-base-v3-discriminator**|0.000001|20|16|sentence switch|0.9139|X|stepLR|Huber Loss|
+|**klue/roberta-base**|0.00001|15|8|sentence switch|0.9909|X|X|L1Loss|
+|**klue/roberta-large**|0.00001|2|8|sentence switch|0.8617|특수문자제거 + 영어소문자|stepLR|L1Loss|
+|**beomi/KcELECTRA-base**|0.000005|10|32|sentence switch|0.8566|X|X|L1Loss|
 
 각 모델별로 
 
